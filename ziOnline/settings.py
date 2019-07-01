@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'course',
+    'organization',
+    'operation',
 ]
 
 MIDDLEWARE = [
@@ -86,10 +89,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'zionline',
-        'USER': 'root',          #账号
-        'PASSWORD': 'root',      #密码
-        'HOST': '127.0.0.1',    #IP
-        'PORT': '3306',                   #端口
+        'USER': 'root',  # 账号
+        'PASSWORD': 'root',  # 密码
+        'HOST': '127.0.0.1',  # IP
+        'PORT': '3306',  # 端口
     }
 }
 
