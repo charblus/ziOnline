@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for ziOnline project.
 
@@ -11,10 +12,12 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+# 首先导入sys模块，然后添加apps到搜索路径，插入第0是希望它先搜索我们app下东西
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
