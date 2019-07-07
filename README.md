@@ -20,14 +20,6 @@ python manage.py migrate
 ```
 
 
-## dev recond
-```
-# -*- coding: utf-8 -*-
-
-```
-model 中的class 也是从上往下执行的  下面的class 使用其他class 放下面会检测不到
-
-pip 安装目录在 `/anaconda3/envs/py36/lib/python3.6/site-packages`
 
 ## 后台管理
 xadmin
@@ -37,3 +29,18 @@ xadmin
 
 
 
+## 开发规范
+
+1. 一般class 之间空两行
+2. 不加分号 ；
+3. py文件开头加上
+```
+# -*- coding: utf-8 -*-
+```
+
+
+## dev recond
+
+model 中的class 也是从上往下执行的  下面的class 使用其他class 放下面会检测不到
+
+pip 安装目录在 `/anaconda3/envs/py36/lib/python3.6/site-packages`
