@@ -6,7 +6,7 @@ from django.db.models import Q
 # Create your views here.
 # 当我们配置url被这个view处理时，自动传入request对象
 
-from .models import UserProfile
+from .models import UserProfile, EmailVerifyRecord
 
 from django.views.generic import View
 from .forms import LoginForm, RegisterForm
@@ -14,6 +14,9 @@ from .forms import LoginForm, RegisterForm
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 
+# django自带的类库，加密解密
+from django.contrib.auth.hashers import make_password
+from utils.email_send import send_register_email
 # 自定义登录，可使用邮箱和账号
 
 
@@ -117,9 +120,14 @@ class RegisterView(View):
 
                 # 加密password进行保存
                 user_profile.password = make_password(pass_word)
+                # 默认激活状态True，需要改为False
+                user_profile.is_active = False
                 user_profile.save()
 
-                # 发送邮件功能待写
+                # 发送注册激活邮件
+                send_register_email(request_uri=request.build_absolute_uri(
+                ), email=user_name, send_type='register')
+
                 return render(request, 'login.html')
             else:
                 return render(request, 'register.html', {
@@ -134,3 +142,31 @@ class RegisterView(View):
             'hashkey': hashkey,
             'image_url': image_url,
         })
+
+
+# 激活用户
+class ActiveUserView(View):
+    def get(self, request, active_code):
+        # 查询验证码是否存在
+        all_record = EmailVerifyRecord.objects.filter(code=active_code)
+
+        if all_record:
+            for record in all_record:
+                email = record.email
+                user = UserProfile.objects.get(email=email)
+                user.is_active = True
+                user.save()
+                return render(request, 'login.html', {
+                    'msg': '激活用户成功'
+                })
+
+        else:
+            register_form = RegisterForm()
+            hashkey = CaptchaStore.generate_key()
+            image_url = captcha_image_url(hashkey)
+            return render(request, 'register.html', {
+                "msg": "您的激活链接无效",
+                'register_form': register_form,
+                'hashkey': hashkey,
+                'image_url': image_url,
+            })

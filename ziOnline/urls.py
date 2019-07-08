@@ -14,12 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from django.views.generic import TemplateView
 
 import xadmin
 
-from users.views import user_login, LoginView, RegisterView
+from users.views import user_login, LoginView, RegisterView, ActiveUserView
 from django.urls import include
 
 
@@ -31,5 +31,7 @@ urlpatterns = [
     # path('login/', user_login, name='login'),
     path('login/', LoginView.as_view(), name='login'),  # 基于类方法实现登录,这里是调用它的方法
     path('register/', RegisterView.as_view(), name='register'),
+    re_path('register/active/(?P<active_code>.*)/',
+            ActiveUserView.as_view(), name='user_active'),  # 激活
     path('captcha/', include('captcha.urls')),
 ]

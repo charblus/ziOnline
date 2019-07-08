@@ -4,6 +4,8 @@
 [项目开发参考：](https://blog.starmeow.cn/feature/1/?page=2)
 
 [github:](https://github.com/xyliurui/OnlineLearningPlatform)
+
+
 ### 启动项目
 ```
 
@@ -43,6 +45,12 @@ xadmin
 
 ## dev recond
 
-model 中的class 也是从上往下执行的  下面的class 使用其他class 放下面会检测不到
+* model 中的class 也是从上往下执行的  下面的class 使用其他class 放下面会检测不到
 
-pip 安装目录在 `/anaconda3/envs/py36/lib/python3.6/site-packages`
+* pip 安装目录在 `/anaconda3/envs/py36/lib/python3.6/site-packages`
+
+* 项目中使用邮箱发送验证码setting.py中配置发送邮箱信息（EMAIL_HOST_USER）
+> 使用的邮箱必须打开 IMAP/SMTP服务 
+> 这里我用的是qq邮箱 开启IMAP/SMTP服务 配置中使用的授权码用做密码使用的 success
+ 
+ 

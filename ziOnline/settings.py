@@ -157,3 +157,19 @@ STATICFILES_DIRS = [
 AUTHENTICATION_BACKENDS = (
     'users.views.CustomBackend',
 )
+
+# 在标准输出中输出e-mail内容来代替通过SMTP服务发送邮件
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# 实际发送邮件
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'  # smtp地址
+EMAIL_HOST_USER = '3033828051@qq.com'
+EMAIL_HOST_PASSWORD = 'utqvawpexoxadddd'
+EMAIL_PORT = 25  # smtp端口
+EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = '3033828051@qq.com'
+# 可以使用这个表达形式
+DEFAULT_FROM_EMAIL = 'DjangoAdmin <3033828051@qq.com>'
+# 管理员站点
+SERVER_EMAIL = '3033828051@qq.com'
+EMAIL_FROM = 'DjangoAdmin<3033828051@qq.com>'  # 一般为登录用户，也就是=EMAIL_HOST_USER
