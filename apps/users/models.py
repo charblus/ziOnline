@@ -44,7 +44,7 @@ class EmailVerifyRecord(models.Model):
 
     class Meta:
         verbose_name_plural = verbose_name = '邮箱验证码'
-    
+
     def __str__(self):
         return '{}({})'.format(self.code, self.email)
 

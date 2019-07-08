@@ -19,7 +19,7 @@ from django.views.generic import TemplateView
 
 import xadmin
 
-from users.views import user_login, LoginView, RegisterView, ActiveUserView
+from users.views import user_login, LoginView, RegisterView, ActiveUserView, ForgetPwdView, RestpwdView, ModifypwdView
 from django.urls import include
 
 
@@ -34,4 +34,8 @@ urlpatterns = [
     re_path('register/active/(?P<active_code>.*)/',
             ActiveUserView.as_view(), name='user_active'),  # 激活
     path('captcha/', include('captcha.urls')),
+    path('forgetpwd/', ForgetPwdView.as_view(), name='forgetpwd'),  # 忘记密码
+    re_path('forgetpwd/reset/(?P<active_code>.*)/',
+            RestpwdView.as_view(), name='resetpwd'),  # 密码重置验证
+    path('modify_pwd/', ModifypwdView.as_view(), name="modify_pwd"),  # 密码修改
 ]

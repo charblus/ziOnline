@@ -9,7 +9,7 @@ from django.db.models import Q
 from .models import UserProfile, EmailVerifyRecord
 
 from django.views.generic import View
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, ForgetPwdForm, ModifyPwdForm
 # captcha验证码
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
@@ -169,4 +169,105 @@ class ActiveUserView(View):
                 'register_form': register_form,
                 'hashkey': hashkey,
                 'image_url': image_url,
+            })
+
+
+# 忘记密码视图
+class ForgetPwdView(View):
+    def get(self, request):
+        # print(request.build_absolute_uri())
+        forgetpwd_form = ForgetPwdForm()
+        # 图片验证码
+        hashkey = CaptchaStore.generate_key()
+        image_url = captcha_image_url(hashkey)
+        return render(request, 'forgetpwd.html', {
+            'forgetpwd_form': forgetpwd_form,
+            'hashkey': hashkey,
+            'image_url': image_url,
+        })
+
+    def post(self, request):
+        forgetpwd_form = ForgetPwdForm(request.POST)
+        # 图片验证码
+        hashkey = CaptchaStore.generate_key()
+        image_url = captcha_image_url(hashkey)
+
+        if forgetpwd_form.is_valid():
+            email = request.POST.get('email', '')
+            if UserProfile.objects.filter(email=email):
+                # 如果邮箱是注册过的，就发送改密邮件，然后跳回登录页面
+                send_register_email(
+                    request_uri=request.build_absolute_uri(), email=email, send_type='forget')
+
+                return render(request, 'login.html', {
+                    'msg': '重置密码邮件已发送,请注意查收',
+                })
+            else:
+                return render(request, 'forgetpwd.html', {
+                    'forgetpwd_form': forgetpwd_form,
+                    'hashkey': hashkey,
+                    'image_url': image_url,
+                    'msg': '邮箱未注册，请检查是否输入错误'
+                })
+        else:
+            return render(request, 'forgetpwd.html', {
+                'forgetpwd_form': forgetpwd_form,
+                'hashkey': hashkey,
+                'image_url': image_url,
+            })
+
+
+# 重置密码
+class RestpwdView(View):
+    def get(self, request, active_code):
+        # 查询验证码是否存在
+        all_record = EmailVerifyRecord.objects.filter(code=active_code)
+
+        if all_record:
+            for record in all_record:
+                email = record.email
+
+                return render(request, 'pwdreset.html', {
+                    'email': email
+                })
+        else:
+            forgetpwd_form = ForgetPwdForm()
+            hashkey = CaptchaStore.generate_key()
+            image_url = captcha_image_url(hashkey)
+
+            return render(request, 'forgetpwd.html', {
+                'forgetpwd_form': forgetpwd_form,
+                "msg": "您的重置链接无效",
+                'hashkey': hashkey,
+                'image_url': image_url,
+            })
+
+
+# 修改密码
+class ModifypwdView(View):
+    def post(self, request):
+        modifypwd_form = ModifyPwdForm(request.POST)
+        if modifypwd_form.is_valid():
+            pwd1 = request.POST.get("password", "")
+            pwd2 = request.POST.get("re_password", "")
+            email = request.POST.get("email", "")
+            # 如果两次密码不相等，返回错误信息
+            if pwd1 != pwd2:
+                return render(request, "pwdreset.html", {
+                    "email": email,
+                    "msg": "密码不一致",
+                    'modifypwd_form': modifypwd_form,
+                })
+            # 如果密码一致
+            user = UserProfile.objects.get(email=email)
+            # 加密成密文
+            user.password = make_password(pwd2)
+            # save保存到数据库
+            user.save()
+            return render(request, "login.html", {"msg": "密码修改成功，请登录"})
+        else:
+            email = request.POST.get("email", "")
+            return render(request, 'pwdreset.html', {
+                'email': email,
+                'modifypwd_form': modifypwd_form,
             })
