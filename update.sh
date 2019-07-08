@@ -2,6 +2,6 @@
  ls
 git add .
 git status
-git commit -m  "xadmin sys self config"
+git commit -m  "03"
 git pull origin master
 git push origin master
