@@ -11,10 +11,12 @@ from .models import UserProfile
 from django.views.generic import View
 from .forms import LoginForm, RegisterForm
 # captcha验证码
-from captcha.models import CaptchaStore  
-from captcha.helpers import captcha_image_url  
+from captcha.models import CaptchaStore
+from captcha.helpers import captcha_image_url
 
 # 自定义登录，可使用邮箱和账号
+
+
 class CustomBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
@@ -90,7 +92,45 @@ class RegisterView(View):
         image_url = captcha_image_url(hashkey)
 
         return render(request, 'register.html', {
-                      'register_form': register_form,
-                      'hashkey': hashkey,
-                      'image_url': image_url,
-                      })
+            'register_form': register_form,
+            'hashkey': hashkey,
+            'image_url': image_url,
+        })
+
+    def post(self, request):
+        register_form = RegisterForm(request.POST)
+
+        # 图片验证码
+        hashkey = CaptchaStore.generate_key()
+        image_url = captcha_image_url(hashkey)
+
+        if register_form.is_valid():
+            user_name = request.POST.get("email", "")
+            pass_word = request.POST.get("password", "")
+
+            # 用户不为空字符串，且用户
+            if user_name.strip() != '' and not UserProfile.objects.filter(email=user_name):
+                 # 实例化一个user_profile对象，将前台值存入
+                user_profile = UserProfile()
+                user_profile.username = user_name
+                user_profile.email = user_name
+
+                # 加密password进行保存
+                user_profile.password = make_password(pass_word)
+                user_profile.save()
+
+                # 发送邮件功能待写
+                return render(request, 'login.html')
+            else:
+                return render(request, 'register.html', {
+                    'register_form': register_form,
+                    'msg': '邮箱已使用！',
+                    'hashkey': hashkey,
+                    'image_url': image_url,
+                })
+
+        return render(request, 'register.html', {
+            'register_form': register_form,
+            'hashkey': hashkey,
+            'image_url': image_url,
+        })

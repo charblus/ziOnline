@@ -2,6 +2,6 @@
  ls
 git add .
 git status
-git commit -m  "and register"
+git commit -m  "password jiami"
 git pull origin master
 git push origin master
