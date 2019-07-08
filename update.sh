@@ -2,6 +2,6 @@
  ls
 git add .
 git status
-git commit -m  "email stmp enable and email set in setting.py"
+git commit -m  "05"
 git pull origin master
 git push origin master
