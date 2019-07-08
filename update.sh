@@ -2,6 +2,6 @@
  ls
 git add .
 git status
-git commit -m  "04"
+git commit -m  "and register"
 git pull origin master
 git push origin master

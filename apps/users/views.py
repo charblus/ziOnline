@@ -9,12 +9,12 @@ from django.db.models import Q
 from .models import UserProfile
 
 from django.views.generic import View
-from .forms import LoginForm
-
+from .forms import LoginForm, RegisterForm
+# captcha验证码
+from captcha.models import CaptchaStore  
+from captcha.helpers import captcha_image_url  
 
 # 自定义登录，可使用邮箱和账号
-
-
 class CustomBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
@@ -77,3 +77,20 @@ class LoginView(View):
             return render(request, 'login.html', {
                 'login_form': login_form,
             })
+
+
+# 用户注册
+class RegisterView(View):
+    def get(self, request):
+        # print(request.build_absolute_uri())  # 地址为：  http://127.0.0.1:8000/register/
+        register_form = RegisterForm()
+        # 图片验证码
+        # hashkey验证码生成的秘钥，image_url验证码的图片地址
+        hashkey = CaptchaStore.generate_key()
+        image_url = captcha_image_url(hashkey)
+
+        return render(request, 'register.html', {
+                      'register_form': register_form,
+                      'hashkey': hashkey,
+                      'image_url': image_url,
+                      })

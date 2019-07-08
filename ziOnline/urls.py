@@ -17,9 +17,11 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
 
-from users.views import user_login, LoginView
-
 import xadmin
+
+from users.views import user_login, LoginView, RegisterView
+from django.urls import include
+
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
@@ -28,4 +30,6 @@ urlpatterns = [
     # path('login/', TemplateView.as_view(template_name='login.html'), name='login'),
     # path('login/', user_login, name='login'),
     path('login/', LoginView.as_view(), name='login'),  # 基于类方法实现登录,这里是调用它的方法
+    path('register/', RegisterView.as_view(), name='register'),
+    path('captcha/', include('captcha.urls')),
 ]
