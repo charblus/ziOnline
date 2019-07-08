@@ -151,3 +151,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+# 设置邮箱和用户名均可登录
+AUTHENTICATION_BACKENDS = (
+    'users.views.CustomBackend',
+)
