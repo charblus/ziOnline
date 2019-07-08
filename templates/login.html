@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学习中心--登录</title>
+</head>
+<body>
+  <h3 class="no-margins">登录</h3>
+  <p class="m-t-md">登录到学习平台</p>
+  <form method="post" action="/login/">
+    <input name='username' type="text" class="form-control uname" placeholder="用户名" />
+    <input name='password' type="password" class="form-control pword m-b" placeholder="密码" />
+    {% csrf_token %}
+    <a href="">忘记密码了？</a>
+    <button type="submit" class="btn btn-success btn-block">登录</button>
+  </form>
+</body>
+</html>
