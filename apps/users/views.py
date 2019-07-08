@@ -8,6 +8,10 @@ from django.db.models import Q
 
 from .models import UserProfile
 
+from django.views.generic import View
+from .forms import LoginForm
+
+
 # 自定义登录，可使用邮箱和账号
 
 
@@ -44,3 +48,32 @@ def user_login(request):
             })
     elif request.method == 'GET':
         return render(request, 'login.html', {})
+
+
+# 基于类的视图实现登录
+class LoginView(View):
+    def get(self, request):
+        return render(request, 'login.html', {})
+
+    def post(self, request):
+        login_form = LoginForm(request.POST)
+
+        if login_form.is_valid():
+            user_name = request.POST.get('username', '')
+            pass_word = request.POST.get('password', '')
+
+            user = authenticate(username=user_name, password=pass_word)
+
+            # 认证成功返回user对象，失败返回null
+            if user:
+                login(request, user)
+                return render(request, 'index.html')
+            else:
+                return render(request, 'login.html', {
+                    'msg': '用户名或密码错误!',
+                    'login_form': login_form,
+                })
+        else:
+            return render(request, 'login.html', {
+                'login_form': login_form,
+            })

@@ -2,6 +2,8 @@
 > 这是一个django在线教育平台项目  django入坑中 
 
 [项目开发参考：](https://blog.starmeow.cn/feature/1/?page=2)
+
+[github:](https://github.com/xyliurui/OnlineLearningPlatform)
 ### 启动项目
 ```
 
