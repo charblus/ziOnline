@@ -10,6 +10,12 @@
   <form method="post" action="/login/">
     <input name='username' type="text" class="form-control uname" placeholder="用户名" />
     <input name='password' type="password" class="form-control pword m-b" placeholder="密码" />
+    {% if msg %}
+        <div class="alert alert-danger" style="padding: 5px;">
+                {{ msg }}
+        </div>
+    {% endif %}
+    
     {% csrf_token %}
     <a href="">忘记密码了？</a>
     <button type="submit" class="btn btn-success btn-block">登录</button>
