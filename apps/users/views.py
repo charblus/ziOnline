@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate
 
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
+from django.http import HttpResponseRedirect 
 # Create your views here.
 # 当我们配置url被这个view处理时，自动传入request对象
 
@@ -72,7 +73,8 @@ class LoginView(View):
             # 认证成功返回user对象，失败返回null
             if user:
                 login(request, user)
-                return render(request, 'index.html')
+                # return render(request, 'index.html')
+                return HttpResponseRedirect("/xadmin/") 
             else:
                 return render(request, 'login.html', {
                     'msg': '用户名或密码错误!',
