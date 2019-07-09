@@ -2,6 +2,6 @@
  ls
 git add .
 git status
-git commit -m  "login to xadmin"
+git commit -m  "06"
 git pull origin dev
 git push origin dev
