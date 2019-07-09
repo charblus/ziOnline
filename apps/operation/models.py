@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.db import models
 
-from course.models import Course
+from courses.models import Course
 from users.models import UserProfile
 # Create your models here.
 # 五张表

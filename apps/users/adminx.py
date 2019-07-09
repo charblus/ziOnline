@@ -4,7 +4,7 @@ from xadmin import views
 
 from .models import EmailVerifyRecord, Banner
 
-from course.models import *
+from courses.models import *
 from organization.models import *
 from operation.models import *
 from django.contrib.auth.models import Group, Permission
