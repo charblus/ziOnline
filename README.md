@@ -53,4 +53,16 @@ xadmin
 > 使用的邮箱必须打开 IMAP/SMTP服务 
 > 这里我用的是qq邮箱 开启IMAP/SMTP服务 配置中使用的授权码用做密码使用的 success
  
- 
+第三方依赖
+```shell
+# pip3 install Django==2.0.8
+# pip3 install django-crispy-forms
+# pip3 install django-import-export
+# pip3 install django-reversion
+# pip3 install django-formtools
+# pip3 install future
+# pip3 install httplib2
+# pip3 install six
+# pip3 install  django-simple-captcha
+# pip3 install django-pure-pagination
+```

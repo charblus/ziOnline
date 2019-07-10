@@ -1,7 +1,2 @@
 #!/bin/bash
- ls
-git add .
-git status
-git commit -m  "06"
-git pull origin base
-git push origin base
+scp /Users/macbookpro/pyproj/ziOnline/dist/ziOnline-1.0.0.tar.gz  root@139.180.145.96:/home/www
